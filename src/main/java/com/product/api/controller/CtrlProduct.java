@@ -12,7 +12,7 @@ import java.util.List;
 public class CtrlProduct {
 
     @GetMapping
-    public List<Category> getCategories() {
+    public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = new ArrayList<>();
 
         // Categoría 1: Ropa
