@@ -1,5 +1,14 @@
-package com.product;
+package com.product.api.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "category")
 public class Category {
 
     /**
@@ -7,25 +16,31 @@ public class Category {
      */
 
     // Integer con valor del identificador de la categoria
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Integer categoryId;
 
     // String con valor de el nombre de la categoria 
+    @Column(name = "category")
     private String category;
 
     // String con valor de nombre de la categia abreviado usado como etiqueta
+    @Column(name = "tag")
     private String tag;
 
     // Integer con valor de el identificador de la cateria padre de la categoria con posibilidad de ser nulo si no tiene padre
+    @Column(name = "parent_category_id")
     private Integer parentCategoryId;
 
     //Integer con valor 1 o 0 si la categoria esta activa siendo 1 o 0 si esta categoria es borrada
+    @Column(name = "status")
     private Integer status;
 
     /**
      * Metodo constructor de la clase 
      */
     public Category() {
-        this.status = 1;
     }
     
     /**
