@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ * Clase encarga de dar los mensajes con las exceptions para el usuario
+ * RestExceptionHandler
+ */
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
+    /**
+     * Devuleve una excetion para mostrar al usuario
+     * @param exception
+     * @param request
+     * @return ResponsiveEntity
+     */
     @ExceptionHandler(ApiException.class)
     protected ResponseEntity<ExceptionResponse> handleApiException(ApiException exception, WebRequest request){
         ExceptionResponse response = new ExceptionResponse();
@@ -22,6 +32,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<>(response, response.getError());
     } 
 
+    /**
+     * Devuelve una exception para mostrar al usuario
+     * @param exception
+     * @param request
+     * @return ResponsiveEntity
+     */
     @ExceptionHandler(DBAccessException.class)
     protected ResponseEntity<ExceptionResponse> handleDBAccessException(DBAccessException exception, WebRequest request){
         ExceptionResponse response = new ExceptionResponse();

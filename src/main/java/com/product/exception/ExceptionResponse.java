@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ExceptionResponse {
 
+	/*Atributos de la clase */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern= "yyyy.MM.dd hh.mm.ss")
     private LocalDateTime timestamp;
     private Integer status;
@@ -16,6 +17,9 @@ public class ExceptionResponse {
     private String message;
     private String path;
 
+	/**
+	 * Metodo contructor de la clase
+	 */
     public ExceptionResponse(){
         super();
     }

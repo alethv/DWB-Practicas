@@ -14,14 +14,23 @@ import java.util.List;
 @RequestMapping("/category")
 public class CtrlCategory {
 
+    /**Atributos de la clase */
     @Autowired
     private SvcCategory svc;
 
+    /**
+     * endpoint que da todas las categorias de la tienda
+     * @return List Category
+     */
     @GetMapping
     public ResponseEntity<List<Category>> getCategories() {
         return svc.getCategories();
     }
 
+    /**
+     * endpoint que devuelve solo las categorias activas de la tienda
+     * @return List Category
+     */
     @GetMapping("/active")
     public ResponseEntity<List<Category>> getActiveCategories() {
         return svc.getActiveCategories();
