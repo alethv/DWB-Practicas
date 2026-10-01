@@ -1,7 +1,9 @@
 package com.product.api.service;
 
+import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
+import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
 import org.springframework.dao.DataAccessException;
@@ -21,7 +23,7 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     @Override
-    public ResponseEntity<List<Category>> getCategories() {
+    public List<Category> findAll() {
         try {
             return new ResponseEntity<List<Category>>(repo.getCategories(), HttpStatus.OK);
         } catch(DataAccessException e) {
@@ -30,11 +32,51 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     @Override
-    public ResponseEntity<List<Category>> getActiveCategories() {
+    public List<Category> findActive() {
         try {
             return new ResponseEntity<List<Category>>(repo.findByStatusOrderByCategory(1), HttpStatus.OK);
         } catch(DataAccessException e) {
             throw new DBAccessException(e);
+        }
+    }
+
+    @Override
+    public List<Category> findChilds(Integer id) {
+        return repo.findByParentCategoryId(id);
+    }
+    
+    @Override
+    public void create(DtoCategoryIn dto) {
+        try {
+            repo.create(dto.getCategory(), dto.getTag(), dto.getParentCategoryId());
+        } catch(DataAccessException e) {
+            String msg = e.getLocalizedMessage();
+            if (msg != null && msg.contains("ux_category"))
+                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está en uso");
+            if (msg != null && msg.contains("ux_tag"))
+                throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está en uso");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al crear la categoría");
+        }
+    }
+    
+    @Override
+    public void update(DtoCategoryIn dto, Integer id) {}
+    
+    @Override
+    public void enable(Integer id) {
+        try {
+            repo.updateStatus(id, 1);
+        } catch(DataAccessException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al activar la categoría");
+        }
+    }
+    
+    @Override
+    public void disable(Integer id) {
+        try {
+            repo.updateStatus(id, 0);
+        } catch(DataAccessException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al desactivar la categoría");
         }
     }
 }
