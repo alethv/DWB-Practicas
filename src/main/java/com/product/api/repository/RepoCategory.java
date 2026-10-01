@@ -24,6 +24,11 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     @Transactional
     @Query(value="INSERT INTO category(category, tag, status, parent_category_id) VALUES(:category, :tag, 1, :parent_category_id)", nativeQuery = true)
     public void create(@Param("category") String category, @Param("tag") String tag,  @Param("parent_category_id") Integer parentCategoryId);
+
+    @Modifying(clearAutomatically =true, flushAutomatically = true)
+    @Transactional
+    @Query(value="UPDATE category SET category = :category, tag = :tag WHERE parent_category_id = :parent_categoryId", nativeQuery=true)
+    public void update(@Param(category_id) String category, @Param(tag) String tag, @Param(parent_category_id) Integer parent_category_Id);
     
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional

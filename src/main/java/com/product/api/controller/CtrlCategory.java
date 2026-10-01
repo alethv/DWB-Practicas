@@ -38,6 +38,12 @@ public class CtrlCategory {
         return ResponseEntity.ok().body("La categoría ha sido registrada");
     }
 
+    @put("category/(id)")
+    public ResponseEntity<String> update(@RequestBody DtoCategoryIn dto){
+        svc.update(dto);
+        return ResponseEntity.ok().body("La categoria ha sido actualizada");
+    }
+
     @PatchMapping("(id)/enable")
     public ResponseEntity<String> enable(@PathVariable Integer id) {
         svc.enable(id);
