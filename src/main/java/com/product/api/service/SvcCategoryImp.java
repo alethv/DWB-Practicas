@@ -24,20 +24,12 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override
     public List<Category> findAll() {
-        try {
-            return new ResponseEntity<List<Category>>(repo.getCategories(), HttpStatus.OK);
-        } catch(DataAccessException e) {
-            throw new DBAccessException(e);
-        }
+        return repo.findAll();
     }
 
     @Override
     public List<Category> findActive() {
-        try {
-            return new ResponseEntity<List<Category>>(repo.findByStatusOrderByCategory(1), HttpStatus.OK);
-        } catch(DataAccessException e) {
-            throw new DBAccessException(e);
-        }
+        return repo.findActive();
     }
 
     @Override
@@ -62,7 +54,7 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
         try{
-            repo.update(dto.getCategory(),dto.getTag(),dto.getParentCategoryId());
+            repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
         }catch(DataAccessException e){
             String msg = e.getLocalizedMessage();
             if(msg!=null && msg.contains("ux_category"))
