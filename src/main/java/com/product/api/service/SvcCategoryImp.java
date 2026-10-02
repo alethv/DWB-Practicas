@@ -54,11 +54,20 @@ public class SvcCategoryImp implements SvcCategory {
         try {
             repo.create(dto.getCategory(), dto.getTag(), dto.getParentCategoryId());
         } catch(DataAccessException e) {
-            String msg = e.getLocalizedMessage();
-            if (msg != null && msg.contains("ux_category"))
-                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está en uso");
-            if (msg != null && msg.contains("ux_tag"))
-                throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está en uso");
+            Throwable root = e.getRootCause();
+            String msg = (root != null) ? root.getMessage() : e.getMessage();
+            if (msg != null) {
+                if (msg.contains("ux_category_category"))
+                    throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está en uso");
+                if (msg.contains("ux_category_tag"))
+                    throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está en uso");
+                if (msg.contains("fk_parent_category"))
+                    throw new ApiException(HttpStatus.NOT_FOUND, "La categoría padre no existe");
+                if (msg.contains("La categoría padre no existe o está inactiva"))
+                    throw new ApiException(HttpStatus.NOT_FOUND, "La categoría padre no existe o está inactiva");
+                if (msg.contains("Una categoría no pude ser padre de si misma"))
+                    throw new ApiException(HttpStatus.BAD_REQUEST, "La categoría no puede ser su propio padre");
+            }
             throw new ApiException(HttpStatus.BAD_REQUEST, "Error al crear la categoría");
         }
     }
