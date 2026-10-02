@@ -42,7 +42,11 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override
     public List<Category> findChilds(Integer id) {
-        return repo.findByParentCategoryId(id);
+        try {
+		    return repo.findByParentCategoryId(id);
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
+        }
     }
     
     @Override
