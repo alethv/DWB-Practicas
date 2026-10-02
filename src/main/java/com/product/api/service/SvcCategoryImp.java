@@ -33,7 +33,11 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override
     public List<Category> findActive() {
-        return repo.findActive();
+        try {
+		    return repo.findActive();
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
+        }
     }
 
     @Override
