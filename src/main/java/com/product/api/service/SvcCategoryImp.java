@@ -24,7 +24,11 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override
     public List<Category> findAll() {
-        return repo.findAll();
+        try {
+		    return repo.findAll();
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
+        }
     }
 
     @Override
