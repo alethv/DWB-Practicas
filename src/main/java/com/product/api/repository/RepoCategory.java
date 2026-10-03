@@ -35,8 +35,8 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
-    @Query(value="UPDATE category SET status = :status WHERE category_id = :categoryId", nativeQuery = true)
-    public void updateStatus(@Param("category_id") Integer categoryId, @Param("status") Integer status);
+    @Query(value="UPDATE category SET status = :status WHERE category_id = :category_id", nativeQuery = true)
+    public void updateStatus(@Param("category_id") Integer category_id, @Param("status") Integer status);
 
     List<Category> findByParentCategoryId(Integer id);
 }
