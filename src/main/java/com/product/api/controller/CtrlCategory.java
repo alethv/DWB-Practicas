@@ -51,7 +51,7 @@ public class CtrlCategory {
     }
 
     @PostMapping()
-    public ResponseEntity<String> create(@RequestBody DtoCategoryIn dto) {
+    public ResponseEntity<String> create(@Valid @RequestBody DtoCategoryIn dto) {
         svc.create(dto);
         return ResponseEntity.ok().body("La categoría ha sido registrada");
     }
