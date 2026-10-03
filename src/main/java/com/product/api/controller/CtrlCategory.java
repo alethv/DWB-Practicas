@@ -46,7 +46,7 @@ public class CtrlCategory {
     }
 
     @GetMapping("/{id}/childs")
-     public ResponseEntity<List<Category>> findChilds(@RequestBody Integer id){
+     public ResponseEntity<List<Category>> findChilds(@PathVariable Integer id){
         return ResponseEntity.ok(svc.findChilds(id));
     }
 
