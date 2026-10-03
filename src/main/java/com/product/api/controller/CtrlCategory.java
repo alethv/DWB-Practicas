@@ -23,8 +23,8 @@ public class CtrlCategory {
      * @return List Category
      */
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories() {
-        return svc.getCategories();
+    public ResponseEntity<List<Category>> findAll(){
+	    return ResponseEntity.ok(svc.findAll());
     }
 
     /**
@@ -32,7 +32,7 @@ public class CtrlCategory {
      * @return List Category
      */
     @GetMapping("/active")
-    public ResponseEntity<List<Category>> getActiveCategories() {
-        return svc.getActiveCategories();
+     public ResponseEntity<List<Category>> findActive(){
+        return ResponseEntity.ok(svc.findActive());
     }
 }
