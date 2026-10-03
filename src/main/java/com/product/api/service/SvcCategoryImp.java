@@ -27,18 +27,17 @@ public class SvcCategoryImp implements SvcCategory {
         this.repo = repo;
     }
 
-    /**    (non-Javadoc)
+    /**
      *Metodo que obtiene todas las categoria de la tienda
      * @return List Category
      * 
-     * */
-
+     */
     @Override
-    public ResponseEntity<List<Category>> getCategories() {
+    public List<Category> findAll() {
         try {
-            return new ResponseEntity<List<Category>>(repo.getCategories(), HttpStatus.OK);
-        } catch(DataAccessException e) {
-            throw new DBAccessException(e);
+		    return repo.findAll();
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
         }
     }
 
@@ -47,11 +46,11 @@ public class SvcCategoryImp implements SvcCategory {
      * @return List Category
      */
     @Override
-    public ResponseEntity<List<Category>> getActiveCategories() {
+    public List<Category> findActive() {
         try {
-            return new ResponseEntity<List<Category>>(repo.findByStatusOrderByCategory(1), HttpStatus.OK);
-        } catch(DataAccessException e) {
-            throw new DBAccessException(e);
+		    return repo.findActive();
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
         }
     }
 }
