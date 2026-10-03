@@ -45,6 +45,11 @@ public class CtrlCategory {
         return ResponseEntity.ok(svc.findActive());
     }
 
+    @GetMapping("/{id}/childs")
+     public ResponseEntity<List<Category>> findChilds(@RequestBody Integer id){
+        return ResponseEntity.ok(svc.findChilds(id));
+    }
+
     @PostMapping()
     public ResponseEntity<String> create(@RequestBody DtoCategoryIn dto) {
         svc.create(dto);
