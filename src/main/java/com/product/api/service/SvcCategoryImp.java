@@ -53,4 +53,13 @@ public class SvcCategoryImp implements SvcCategory {
         	throw new DBAccessException(e);
         }
     }
+
+    @Override
+    public List<Category> findChilds(Integer id) {
+        try {
+		    return repo.findByParentCategoryId(id);
+	    } catch (DataAccessException e) {
+        	throw new DBAccessException(e);
+        }
+    }
 }
