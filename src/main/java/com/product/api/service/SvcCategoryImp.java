@@ -1,7 +1,9 @@
 package com.product.api.service;
 
+import com.product.api.dto.DtoCategoryIn;
 import com.product.api.entity.Category;
 import com.product.api.repository.RepoCategory;
+import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
 import org.springframework.dao.DataAccessException;
@@ -60,6 +62,43 @@ public class SvcCategoryImp implements SvcCategory {
 		    return repo.findByParentCategoryId(id);
 	    } catch (DataAccessException e) {
         	throw new DBAccessException(e);
+        }
+    }
+
+    @Override
+    public void create(DtoCategoryIn dto) {
+        try {
+            repo.create(dto.getCategory(), dto.getTag(), dto.getParentCategoryId());
+        } catch(DataAccessException e) {
+            Throwable root = e.getRootCause();
+            String msg = (root != null) ? root.getMessage() : e.getMessage();
+            if (msg != null) {
+                if (msg.contains("ux_category_category"))
+                    throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está en uso");
+                if (msg.contains("ux_category_tag"))
+                    throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está en uso");
+                if (msg.contains("fk_parent_category"))
+                    throw new ApiException(HttpStatus.NOT_FOUND, "La categoría padre no existe");
+                if (msg.contains("La categoría padre no existe o está inactiva"))
+                    throw new ApiException(HttpStatus.NOT_FOUND, "La categoría padre no existe o está inactiva");
+                if (msg.contains("Una categoría no pude ser padre de si misma"))
+                    throw new ApiException(HttpStatus.BAD_REQUEST, "La categoría no puede ser su propio padre");
+            }
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al crear la categoría");
+        }
+    }
+    
+    @Override
+    public void update(DtoCategoryIn dto, Integer id) {
+        try{
+            repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
+        }catch(DataAccessException e){
+            String msg = e.getLocalizedMessage();
+            if(msg!=null && msg.contains("ux_category"))
+                throw new ApiException(
+            HttpStatus.CONFLICT,
+            "El nombre de la region ya esta registrado"
+        );
         }
     }
 }
