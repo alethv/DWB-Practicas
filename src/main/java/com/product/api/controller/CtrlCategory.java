@@ -62,10 +62,10 @@ public class CtrlCategory {
         return ResponseEntity.ok().body("La categoria ha sido actualizada");
     }
 
-    @PatchMapping("(id)/enable")
+    @PatchMapping("/{id}/enable")
     public ResponseEntity<String> enable(@PathVariable Integer id) {
         svc.enable(id);
-        return ResponseEntity.ok().body("Categoría activada");
+        return ResponseEntity.ok().body("La categoría ha sido activada");
     }
 
     @PatchMapping("(id)/disable")
