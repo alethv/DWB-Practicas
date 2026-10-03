@@ -101,4 +101,22 @@ public class SvcCategoryImp implements SvcCategory {
         );
         }
     }
+
+    @Override
+    public void enable(Integer id) {
+        try {
+            repo.updateStatus(id, 1);
+        } catch(DataAccessException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al activar la categoría");
+        }
+    }
+    
+    @Override
+    public void disable(Integer id) {
+        try {
+            repo.updateStatus(id, 0);
+        } catch(DataAccessException e) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Error al desactivar la categoría");
+        }
+    }
 }
