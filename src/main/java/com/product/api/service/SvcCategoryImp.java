@@ -104,6 +104,7 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void enable(Integer id) {
         try {
+            validateId(id);
             repo.updateStatus(id, 1);
         } catch(DataAccessException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Error al activar la categoría");
@@ -113,9 +114,19 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void disable(Integer id) {
         try {
+            validateId(id);
             repo.updateStatus(id, 0);
         } catch(DataAccessException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Error al desactivar la categoría");
+        }
+    }
+
+    private void validateId(Integer id){
+        try {
+            if (repo.findById(id).isEmpty())
+                throw new ApiException(HttpStatus.NOT_FOUND,"El id no existe");
+        } catch (ApiException e) {
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,"Ocurrió un error en su petición");
         }
     }
 }
