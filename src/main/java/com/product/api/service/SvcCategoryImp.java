@@ -90,12 +90,13 @@ public class SvcCategoryImp implements SvcCategory {
     
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
+        validateId(id);
+        validateParentCategory(dto.getParentCategoryId(), id);
+
         try {
             repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
         } catch(DataAccessException e){
-            String msg = e.getLocalizedMessage();
-            if (msg!=null && msg.contains("ux_category"))
-                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
+            handleDuplicationErrors(e, "actualizar");
         }
     }
 
@@ -112,7 +113,7 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void disable(Integer id) {
         validateId(id);
-        
+
         // Regla: No es posible eliminar una categoría si tiene categorías hijas
         List<Category> childs = repo.findByParentCategoryId(id);
         if (childs != null && !childs.isEmpty()) {
