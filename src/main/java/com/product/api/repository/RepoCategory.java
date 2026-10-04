@@ -23,7 +23,7 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
 
     List<Category> findByStatusOrderByCategory(@Param("status") Integer status);
 
-    @Query(value="SELECT * FROM category WHERE parent_category_id = id ORDER BY category", nativeQuery = true)
+    @Query(value="SELECT * FROM category WHERE parent_category_id = :parent_category_id ORDER BY category", nativeQuery = true)
     List<Category> findByParentCategoryId(@Param("parent_category_id")Integer parent_category_id);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
