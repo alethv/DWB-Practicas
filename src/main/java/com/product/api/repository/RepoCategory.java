@@ -23,6 +23,9 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
 
     List<Category> findByStatusOrderByCategory(@Param("status") Integer status);
 
+    @Query(value="SELECT * FROM category WHERE parent_category_id = id ORDER BY category", nativeQuery = true)
+    List<Category> findByParentCategoryId(@Param("parent_category_id")Integer parent_category_id);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query(value="INSERT INTO category(category, tag, status, parent_category_id) VALUES(:category, :tag, 1, :parent_category_id)", nativeQuery = true)
@@ -37,6 +40,4 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
     @Transactional
     @Query(value="UPDATE category SET status = :status WHERE category_id = :category_id", nativeQuery = true)
     public void updateStatus(@Param("category_id") Integer category_id, @Param("status") Integer status);
-
-    List<Category> findByParentCategoryId(Integer id);
 }
