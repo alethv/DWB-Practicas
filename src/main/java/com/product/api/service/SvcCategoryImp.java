@@ -101,8 +101,8 @@ public class SvcCategoryImp implements SvcCategory {
 
     @Override
     public void enable(Integer id) {
+        validateId(id);
         try {
-            validateId(id);
             repo.updateStatus(id, 1);
         } catch(DataAccessException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Error al activar la categoría");
