@@ -120,11 +120,8 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     private void validateId(Integer id){
-        try {
-            if (repo.findById(id).isEmpty())
-                throw new ApiException(HttpStatus.NOT_FOUND,"El id no existe");
-        } catch (ApiException e) {
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR,"Ocurrió un error en su petición");
+        if (repo.findById(id).isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
         }
     }
 }
