@@ -111,8 +111,15 @@ public class SvcCategoryImp implements SvcCategory {
     
     @Override
     public void disable(Integer id) {
+        validateId(id);
+        
+        // Regla: No es posible eliminar una categoría si tiene categorías hijas
+        List<Category> childs = repo.findByParentCategoryId(id);
+        if (childs != null && !childs.isEmpty()) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "No es posible eliminar una categoría si tiene categorías hijas");
+        }
+
         try {
-            validateId(id);
             repo.updateStatus(id, 0);
         } catch(DataAccessException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Error al desactivar la categoría");
