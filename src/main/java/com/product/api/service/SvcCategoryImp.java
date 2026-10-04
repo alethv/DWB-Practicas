@@ -124,4 +124,19 @@ public class SvcCategoryImp implements SvcCategory {
             throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
         }
     }
+
+    private void validateParentCategory(Integer parentCategoryId, Integer currentCategoryId) {
+        if (parentCategoryId != null) {
+            // Regla: Una categoría no puede ser padre de sí misma
+            if (currentCategoryId != null && parentCategoryId.equals(currentCategoryId)) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Una categoría no puede ser padre de sí misma");
+            }
+
+            // Regla: Si tiene padre, debe existir y tener estatus 1 (activo)
+            Category parent = repo.findById(parentCategoryId).orElse(null);
+            if (parent == null || parent.getStatus() == 0) {
+                throw new ApiException(HttpStatus.NOT_FOUND, "La categoría padre no existe o está inactiva");
+            }
+        }
+    }
 }
