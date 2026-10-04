@@ -90,15 +90,12 @@ public class SvcCategoryImp implements SvcCategory {
     
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
-        try{
+        try {
             repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
-        }catch(DataAccessException e){
+        } catch(DataAccessException e){
             String msg = e.getLocalizedMessage();
-            if(msg!=null && msg.contains("ux_category"))
-                throw new ApiException(
-            HttpStatus.CONFLICT,
-            "El nombre de la region ya esta registrado"
-        );
+            if (msg!=null && msg.contains("ux_category"))
+                throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está registrado");
         }
     }
 
