@@ -140,7 +140,7 @@ public class SvcCategoryImp implements SvcCategory {
         Throwable root = e.getRootCause();
         String msg = (root != null) ? root.getMessage() : e.getMessage();
         if (msg != null) {
-            if (msg.contains("ux_category_category") || msg.contains("ux_category"))
+            if (msg.contains("ux_category_category"))
                 throw new ApiException(HttpStatus.CONFLICT, "El nombre de la categoría ya está en uso");
             if (msg.contains("ux_category_tag"))
                 throw new ApiException(HttpStatus.CONFLICT, "El tag de la categoría ya está en uso");
