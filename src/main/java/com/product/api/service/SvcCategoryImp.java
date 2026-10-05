@@ -15,23 +15,22 @@ import java.util.List;
 @Service
 public class SvcCategoryImp implements SvcCategory {
 
-    /**Atributos */
+    /** Atributos */
     final RepoCategory repo;
 
-    /**Metodos */
+    /** Metodos */
 
     /**
-     * Metodo constructor de la clase
-     * @param repo
+     * Método constructor de la clase
+     * @param repo Repositorio de la entidad Category
      */
     public SvcCategoryImp(RepoCategory repo) {
         this.repo = repo;
     }
 
     /**
-     *Metodo que obtiene todas las categoria de la tienda
-     * @return List Category
-     * 
+     * Método que obtiene todas las categorías de la tienda.
+     * @return List<Category> Lista con todas las categorías registradas.
      */
     @Override
     public List<Category> findAll() {
@@ -43,8 +42,8 @@ public class SvcCategoryImp implements SvcCategory {
     }
 
     /**    
-     * Metodo que devuelve todas las clases activas de la tienda
-     * @return List Category
+     * Método que devuelve únicamente las categorías activas (status 1) de la tienda.
+     * @return List<Category> Lista con las categorías activas.
      */
     @Override
     public List<Category> findActive() {
@@ -55,6 +54,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+    /**
+     * Método que obtiene todas las categorías hijas asociadas a una categoría padre.
+     * @param id Identificador de la categoría padre.
+     * @return List<Category> Lista de las categorías hijas.
+     */
     @Override
     public List<Category> findChilds(Integer id) {
         validateId(id);
@@ -65,6 +69,10 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+    /**
+     * Método que registra una nueva categoría en el sistema.
+     * @param dto Objeto con los datos de la categoría a crear.
+     */
     @Override
     public void create(DtoCategoryIn dto) {
         validateParentCategory(dto.getParentCategoryId(), null);
@@ -76,6 +84,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Método que actualiza la información de una categoría existente.
+     * @param dto Objeto con los nuevos datos de la categoría.
+     * @param id Identificador de la categoría a actualizar.
+     */
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
         validateId(id);
@@ -88,6 +101,10 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+    /**
+     * Método que activa una categoría cambiando su status a 1.
+     * @param id Identificador de la categoría a activar.
+     */
     @Override
     public void enable(Integer id) {
         validateId(id);
@@ -98,6 +115,11 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
     
+    /**
+     * Método que desactiva una categoría cambiando su status a 0.
+     * Impide la desactivación si la categoría tiene hijas asociadas.
+     * @param id Identificador de la categoría a desactivar.
+     */
     @Override
     public void disable(Integer id) {
         validateId(id);
@@ -115,12 +137,25 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+
+    // --- Métodos de validación auxiliares ---
+
+    /**
+     * Método auxiliar que verifica si el ID de una categoría existe en la base de datos.
+     * @param id Identificador de la categoría a validar.
+     */
     private void validateId(Integer id){
         if (repo.findById(id).isEmpty()) {
             throw new ApiException(HttpStatus.NOT_FOUND, "El id de la categoría no existe");
         }
     }
 
+    /**
+     * Método auxiliar que verifica las reglas de negocio de la categoría padre.
+     * Asegura que exista, esté activa y que una categoría no sea padre de sí misma.
+     * @param parentCategoryId Identificador de la categoría padre proporcionada.
+     * @param currentCategoryId Identificador de la categoría que se está modificando (null en creaciones).
+     */
     private void validateParentCategory(Integer parentCategoryId, Integer currentCategoryId) {
         if (parentCategoryId != null) {
             // Regla: Una categoría no puede ser padre de sí misma
@@ -136,6 +171,12 @@ public class SvcCategoryImp implements SvcCategory {
         }
     }
 
+    /**
+     * Método auxiliar para capturar excepciones de base de datos e identificar si violan 
+     * restricciones de unicidad (nombres o etiquetas duplicadas).
+     * @param e Excepción arrojada por Spring Data.
+     * @param action Acción en formato de texto ("crear" o "actualizar") para el mensaje de error por defecto.
+     */
     private void handleDuplicationErrors(DataAccessException e, String action) {
         Throwable root = e.getRootCause();
         String msg = (root != null) ? root.getMessage() : e.getMessage();
