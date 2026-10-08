@@ -92,10 +92,9 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
         validateId(id);
-        validateParentCategory(dto.getParentCategoryId(), id);
 
         try {
-            repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
+            repo.update(dto.getCategory(), dto.getTag(), id);
         } catch(DataAccessException e){
             handleDuplicationErrors(e, "actualizar");
         }

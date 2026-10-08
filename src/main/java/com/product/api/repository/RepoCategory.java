@@ -65,8 +65,8 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
      */
     @Modifying(clearAutomatically =true, flushAutomatically = true)
     @Transactional
-    @Query(value="UPDATE category SET category = :category, tag = :tag, parent_category_id = :parent_category_id  WHERE category_id = :category_id", nativeQuery=true)
-    public void update(@Param("category") String category, @Param("tag") String tag, @Param("parent_category_id") Integer parent_category_Id, @Param ("category_id") Integer category_id);
+    @Query(value="UPDATE category SET category = :category, tag = :tag WHERE category_id = :category_id", nativeQuery=true)
+    public void update(@Param("category") String category, @Param("tag") String tag, @Param ("category_id") Integer category_id);
     
     /**
      * Actualiza únicamente el status de una categoría (para activar o desactivar).
