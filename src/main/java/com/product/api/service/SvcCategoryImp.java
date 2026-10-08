@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -125,7 +126,15 @@ public class SvcCategoryImp implements SvcCategory {
 
         // Regla: No es posible eliminar una categoría si tiene categorías hijas
         List<Category> childs = repo.findByParentCategoryId(id);
-        if (childs != null && !childs.isEmpty()) {
+        List<Category> childs1 = new ArrayList<>();
+
+        for (Category child : childs) {
+            if (child.getStatus() == 1) {
+                childs1.add(child);
+            }
+        }
+        
+        if (childs1 != null && !childs1.isEmpty()) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "No es posible eliminar una categoría si tiene categorías hijas");
         }
 
