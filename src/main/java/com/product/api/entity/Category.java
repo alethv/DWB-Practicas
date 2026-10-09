@@ -1,5 +1,7 @@
 package com.product.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,22 +20,27 @@ public class Category {
     // Integer con valor del identificador de la categoria
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("categoryId")
     @Column(name = "category_id")
     private Integer categoryId;
 
-    // String con valor de el nombre de la categoria 
+    // String con valor de el nombre de la categoria
+    @JsonProperty("category")
     @Column(name = "category")
     private String category;
 
     // String con valor de nombre de la categia abreviado usado como etiqueta
+    @JsonProperty("tag")
     @Column(name = "tag")
     private String tag;
 
     // Integer con valor de el identificador de la cateria padre de la categoria con posibilidad de ser nulo si no tiene padre
+    @JsonProperty("parentCategoryId")
     @Column(name = "parent_category_id")
     private Integer parentCategoryId;
 
     //Integer con valor 1 o 0 si la categoria esta activa siendo 1 o 0 si esta categoria es borrada
+    @JsonProperty("status")
     @Column(name = "status")
     private Integer status;
 
