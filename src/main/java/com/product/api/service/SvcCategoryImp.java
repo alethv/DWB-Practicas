@@ -93,10 +93,29 @@ public class SvcCategoryImp implements SvcCategory {
     @Override
     public void update(DtoCategoryIn dto, Integer id) {
         validateId(id);
-        validateParentCategory(dto.getParentCategoryId(), id);
+
+        // Guardamos La categoría actual para no perder los datos existentes
+        Category currentCategory = repo.findById(id).get();
+
+        Integer parentIdToUpdate;
+
+        if (dto.getParentCategoryId() != null) {
+            if (dto.getParentCategoryId() == -1) {
+                // Si mandan -1, significa que quieren quitarle el padre, es decir, dejarlo como null
+                parentIdToUpdate = null;
+            } else {
+                // Si mandan un id normal (ej. 4), se actualiza a ese nuevo padre
+                parentIdToUpdate = dto.getParentCategoryId();
+            }
+        } else {
+            // Si mandan null (omiten el campo), conservamos el padre que ya tenia
+            parentIdToUpdate = currentCategory.getParentCategoryId();
+        }
+
+        validateParentCategory(parentIdToUpdate, id);
 
         try {
-            repo.update(dto.getCategory(), dto.getTag(), dto.getParentCategoryId(), id);
+            repo.update(dto.getCategory(), dto.getTag(), parentIdToUpdate, id);
         } catch(DataAccessException e){
             handleDuplicationErrors(e, "actualizar");
         }
