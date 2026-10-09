@@ -49,12 +49,12 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
      * El status se inicializa automáticamente en 1 (activo).
      * @param category Nombre de la nueva categoría.
      * @param tag Tag de la categoría.
-     * @param parentCategoryId Identificador de la categoría padre (puede ser nulo).
+     * @param parent_category_id Identificador de la categoría padre (puede ser nulo).
      */
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query(value="INSERT INTO category(category, tag, status, parent_category_id) VALUES(:category, :tag, 1, :parent_category_id)", nativeQuery = true)
-    public void create(@Param("category") String category, @Param("tag") String tag,  @Param("parent_category_id") Integer parentCategoryId);
+    public void create(@Param("category") String category, @Param("tag") String tag,  @Param("parent_category_id") Integer parent_category_id);
 
     /**
      * Actualiza los datos principales de una categoría existente.
@@ -65,8 +65,8 @@ public interface RepoCategory extends JpaRepository<Category, Integer> {
      */
     @Modifying(clearAutomatically =true, flushAutomatically = true)
     @Transactional
-    @Query(value="UPDATE category SET category = :category, tag = :tag WHERE category_id = :category_id", nativeQuery=true)
-    public void update(@Param("category") String category, @Param("tag") String tag, @Param ("category_id") Integer category_id);
+    @Query(value="UPDATE category SET category = :category, tag = :tag, parent_category_id = :parent_category_id  WHERE category_id = :category_id", nativeQuery=true)
+    public void update(@Param("category") String category, @Param("tag") String tag, @Param("parent_category_id") Integer parent_category_id, @Param ("category_id") Integer category_id);
     
     /**
      * Actualiza únicamente el status de una categoría (para activar o desactivar).
