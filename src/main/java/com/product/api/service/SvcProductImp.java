@@ -40,8 +40,10 @@ public class SvcProductImp implements SvcProduct{
 	public ResponseEntity<DtoProductOut> getProduct(Integer id) {
 		try {
 			validateProductId(id);
-			
-			return new ResponseEntity<>(null, HttpStatus.OK);
+			Product product = repo.findById(id)
+							.orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "El id del producto no existe"));
+							
+			return new ResponseEntity<>(mapper.fromProduct(product), HttpStatus.OK);
 		}catch (DataAccessException e) {
 			throw new DBAccessException(e);
 		}
