@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoProductIn;
 import com.product.api.dto.out.DtoProductListOut;
+import com.product.api.dto.out.DtoProductOut;
 import com.product.api.entity.Product;
 
 @Service
@@ -44,5 +45,17 @@ public class MapperProduct {
 		product.setProduct_id(id);
 		return product;
 	}
-	
+
+	public DtoProductOut fromProduct(Product product) {
+		DtoProductOut out = new DtoProductOut(null, null, null, null, null, null, null, null);
+		out.setProduct_id(product.getProduct_id());
+		out.setGtin(product.getGtin());
+		out.setProduct(product.getProduct());
+		out.setDescription(product.getDescription());
+		out.setPrice(product.getPrice());
+		out.setStock(product.getStock());
+		out.setCategoryId(product.getCategory_id());
+		out.setStatus(product.getStatus());
+		return out;
+	}
 }
