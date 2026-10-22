@@ -1,6 +1,7 @@
 package com.product.api.dto.out;
 
 import java.beans.Transient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DtoProductOut {
 	
@@ -32,7 +33,7 @@ public class DtoProductOut {
 		super();
 		this.product_id = product_id;
 		this.gtin = gtin;
-        this.descrpition = description;
+        this.description = description;
 		this.product = product;
 		this.price = price;
         this.stock = stock;
@@ -65,7 +66,7 @@ public class DtoProductOut {
 	}
 
     public String getDescription() {
-		return descrpition;
+		return description;
 	}
 
 	public void setDescription(String description) {
