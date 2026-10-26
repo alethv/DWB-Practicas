@@ -1,4 +1,4 @@
-package com.product.entity;
+package com.product.api.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +45,7 @@ public class ProductImage{
         return image;
     }
 
-    public void setProductImageId(String image){
+    public void setImage(String image){
         this.image = image;
     }
 
