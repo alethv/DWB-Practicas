@@ -32,12 +32,13 @@ public class ProductImage{
     public void setProductImageId(Integer productImageId){
         this.productImageId = productImageId;
     }
+
     public Integer getProductId(){
-        return productId;
+        return product_id;
     }
 
-    public void setProductId(Integer productId){
-        this.productId = productId;
+    public void setProductId(Integer product_id){
+        this.product_id = product_id;
     }
 
     public String getImage(){
@@ -47,12 +48,12 @@ public class ProductImage{
     public void setProductImageId(String image){
         this.image = image;
     }
+
     public Integer getStatus(){
-        return Status;
+        return status;
     }
 
     public void setStatus(Integer status){
         this.status = status;
     }
-
 }
