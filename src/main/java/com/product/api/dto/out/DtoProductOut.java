@@ -1,6 +1,5 @@
 package com.product.api.dto.out;
 
-import java.beans.Transient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DtoProductOut {
