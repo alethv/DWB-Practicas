@@ -13,6 +13,13 @@ public class DtoProductImageOut {
     @JsonProperty("image")
     private String image;
 
+    public DtoProductImageOut(Integer productImageId, Integer product_id, String image) {
+		super();
+		this.productImageId = productImageId;
+		this.product_id = product_id;
+        this.image = image;
+	}
+
     public Integer getProductImageId() {
         return  productImageId;
     }
