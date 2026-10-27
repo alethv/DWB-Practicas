@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.product.api.dto.in.DtoProductImageIn;
 import com.product.api.dto.out.DtoProductImageOut;
-import com.product.api.entity.Product;
 import com.product.api.entity.ProductImage;
 import com.product.api.repository.RepoProduct;
 import com.product.api.repository.RepoProductImage;
