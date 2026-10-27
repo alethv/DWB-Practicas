@@ -1,11 +1,9 @@
-package com.customer.api.controller;
+package com.product.api.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.customer.api.dto.in.DtoProductIn;
-import com.customer.api.dto.out.DtoProductListOut;
-import com.customer.api.dto.out.DtoProductOut;
-import com.customer.api.service.SvcProduct;
-import com.customer.common.dto.ApiResponse;
-import com.customer.exception.ApiException;
+import com.product.api.dto.in.DtoProductIn;
+import com.product.api.dto.out.DtoProductListOut;
+import com.product.api.dto.out.DtoProductOut;
+import com.product.api.service.SvcProduct;
 
 import jakarta.validation.Valid;
 
@@ -42,22 +38,26 @@ public class CtrlProduct {
 	}
 
 	@PostMapping
-	public ResponseEntity<ApiResponse> createProduct(@Valid @RequestBody DtoProductIn in) {
-		return svc.createProduct(in);
+	public ResponseEntity<String> createProduct(@Valid @RequestBody DtoProductIn in) {
+		svc.createProduct(in);
+		return ResponseEntity.ok().body("El producto ha sido registrado");
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse> updateProduct(@PathVariable Integer id, @Valid @RequestBody DtoProductIn in) {
-		return svc.updateProduct(id, in);
+	public ResponseEntity<String> updateProduct(@PathVariable Integer id, @Valid @RequestBody DtoProductIn in) {
+		svc.updateProduct(id, in);
+		return ResponseEntity.ok().body("El producto ha sido actualizado");
 	}
 
 	@PatchMapping("/{id}/enable")
-	public ResponseEntity<ApiResponse> enableProduct(@PathVariable Integer id) {
-		return svc.enableProduct(id);
+	public ResponseEntity<String> enableProduct(@PathVariable Integer id) {
+		svc.enableProduct(id);
+		return ResponseEntity.ok().body("El producto ha sido activado");
 	}
 
 	@PatchMapping("/{id}/disable")
-	public ResponseEntity<ApiResponse> disableProduct(@PathVariable Integer id) {
-		return svc.disableProduct(id);
+	public ResponseEntity<String> disableProduct(@PathVariable Integer id) {
+		svc.disableProduct(id);
+		return ResponseEntity.ok().body("El producto ha sido desactivado");
 	}
 }
