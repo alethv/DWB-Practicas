@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.product.api.dto.in.DtoProductImageIn;
 import com.product.api.dto.out.DtoProductImageOut;
@@ -22,14 +23,17 @@ import com.product.api.repository.RepoProductImage;
 import com.product.exception.ApiException;
 import com.product.exception.DBAccessException;
 
+@Service
 public class SvcProductImageImp implements SvcProductImage {
     private final RepoProduct repoProduct;
     private final RepoProductImage repoProductImage;
 
-    @Value("${app.upload.dir}")
+    //@Value("${app.upload.dir}")
+    @Value("${app.upload.dir:uploads}")
     private String uploadDir;
 
-    @Value("${app.upload.images}")
+    //@Value("${app.upload.images}")
+    @Value("${app.upload.images:uploads/images}")
     private String uploadImages;
 
     public SvcProductImageImp(RepoProduct repoProduct, RepoProductImage repoProductImage) {
@@ -66,22 +70,22 @@ public class SvcProductImageImp implements SvcProductImage {
             validateProductId(productId);
 
             if (in.getImage().startsWith("data:image")) {
-                int commaIndex = in.getImage().indexOf(" ,");
+                int commaIndex = in.getImage().indexOf(",");
                 if (commaIndex != -1) {
                     in.setImage(in.getImage().substring(commaIndex + 1));
                 }
             }
 
             byte[] imageBytes = Base64.getDecoder().decode(in.getImage());
-            String fileName = UUID.randomUUID().toString() + " .png";
-            Path imagePath = Paths.get(uploadDir, uploadImages, "product", fileName);
+            String fileName = UUID.randomUUID().toString() + ".png";
+            Path imagePath = Paths.get(uploadDir, "images", "product", fileName);
 
             Files.createDirectories(imagePath.getParent());
             Files.write(imagePath, imageBytes);
 
             ProductImage productImage = new ProductImage();
             productImage.setProductId(productId);
-            productImage.setImage("/img/product/" + fileName);
+            productImage.setImage("images/product/" + fileName);
             productImage.setStatus(1);
 
             repoProductImage.save(productImage);
